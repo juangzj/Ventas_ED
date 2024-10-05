@@ -1,0 +1,6 @@
+com\mycompany\gestorventas\JakartaRestConfiguration.class
+conexion\Conectar.class
+modelo\GestionarVentas.class
+servlets\SvEliminarArticulo.class
+com\mycompany\gestorventas\resources\JakartaEE8Resource.class
+modelo\Articulo.class
