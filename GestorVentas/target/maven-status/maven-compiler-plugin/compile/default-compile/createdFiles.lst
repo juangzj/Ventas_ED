@@ -1,3 +1,4 @@
+servlets\SvEditarArticulo.class
 com\mycompany\gestorventas\JakartaRestConfiguration.class
 conexion\Conectar.class
 modelo\GestionarVentas.class

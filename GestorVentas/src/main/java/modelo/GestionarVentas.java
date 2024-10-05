@@ -116,12 +116,14 @@ public class GestionarVentas {
             }
         }
     }
+
     /**
      * Metodo para ingresar un nuevo articulo
+     *
      * @param nombre
      * @param descripcion
      * @param precio
-     * @return 
+     * @return
      */
     public boolean agregarArticulo(String nombre, String descripcion, double precio) {
         String query = "INSERT INTO articulos (nombre, descripcion, precio) VALUES (?, ?, ?)";
@@ -163,6 +165,49 @@ public class GestionarVentas {
         }
 
         return resultado; // Retorna true si se agregó correctamente
+    }
+
+    public boolean editarArticulo(int idArticulo, String nombre, String descripcion, double precio) {
+        String query = "UPDATE articulos SET nombre = ?, descripcion = ?, precio = ? WHERE id = ?";
+        Connection conexion = null;
+        PreparedStatement preparedStatement = null;
+        boolean resultado = false;
+
+        try {
+            // Obtener conexión a la base de datos
+            conexion = Conectar.getConexion();
+
+            // Preparar la sentencia SQL con los parámetros correspondientes
+            preparedStatement = conexion.prepareStatement(query);
+            preparedStatement.setString(1, nombre); // Asignar el nombre al parámetro 1
+            preparedStatement.setString(2, descripcion); // Asignar la descripción al parámetro 2
+            preparedStatement.setDouble(3, precio); // Asignar el precio al parámetro 3
+            preparedStatement.setInt(4, idArticulo); // Asignar el idArticulo al parámetro 4 (para editar el artículo correspondiente)
+
+            // Ejecutar la actualización en la base de datos
+            int filasAfectadas = preparedStatement.executeUpdate();
+
+            // Verificar si la actualización fue exitosa
+            if (filasAfectadas > 0) {
+                resultado = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Mostrar errores de SQL
+        } finally {
+            try {
+                // Cerrar los recursos
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (conexion != null) {
+                    conexion.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return resultado; // Retorna true si se actualizó correctamente
     }
 
 }

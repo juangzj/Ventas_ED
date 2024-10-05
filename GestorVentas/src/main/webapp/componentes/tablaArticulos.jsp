@@ -40,8 +40,11 @@
                             <td>
                                 <!-- Importamos el botón para ver la información de un artículo -->
                                 <%@include file="verArticuloBoton.jsp" %>
-                                <!-- Importamos el botón para editar un artículo -->
-                                <%@include file="editarArticuloBoton.jsp" %>
+                                <!-- Botón para abrir el modal de edición -->
+                                <button type="button" class="btn btn-secondary editarArticulo-btn" data-bs-toggle="modal" data-bs-target="#exampleModalEditar" data-id="<%= articulo.getId() %>"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                    </svg></button>
 
                                 <!-- Botón para eliminar un artículo -->
                                 <button type="button" class="btn btn-danger eliminarArticulo-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" data-id="<%=articulo.getId()%>">
@@ -120,9 +123,50 @@
     </div>
 </div>
 <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------> 
+<!-- Modal para editar un artículo -->
+
+<div class="modal fade" id="exampleModalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="SvEditarArticulo" method="POST"> 
+                <div class="modal-body">
+                    <p>¿Estás seguro de que deseas EDITAR el archivo con ID: <span id="ArticuloIdEditar"></span>?</p>
+                    <!-- Formulario para editar un artículo -->
+
+                    <div class="mb-3">
+                        <label for="nombreArticulo" class="form-label">Nombre</label>
+                        <input type="text" class="form-control"  name="nombreArticuloEditar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcionArticulo" class="form-label">Descripción</label>
+                        <textarea class="form-control"  name="descripcionArticuloEditar" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="precioArticulo" class="form-label">Precio</label>
+                        <input type="number" class="form-control"  name="precioArticuloEditar" step="0.01" required>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" name="confirmarEdicion" value="editar">Editar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------> 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 
 <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------> 
 <!-- Script para obtener el id de la valoracion que se va a elimnar y despues enviarla por ajaxx al servlet -->
@@ -149,3 +193,26 @@
     });
 </script>
 <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------> 
+<!-- Script para obtener el id del ariticulo que se va a editar y despues enviarla por ajaxx al servlet -->
+<script>
+    // Captur clic y mandar el id del  articulo que se va a editar 
+    $('.editarArticulo-btn').on('click', function () {
+        // Obtener el ID del articulo
+        const idArticuloEditar = $(this).data('id');
+        // Mostrar el ID en el modal de la edicion
+        $('#ArticuloIdEditar').text(idArticuloEditar);
+
+        // Envío de ID al servlet a través de AJAX (método POST)
+        $.ajax({
+            url: 'SvEditarArticulo', // Url donde se enviara los datos(en este caso el id)
+            method: 'POST', // Método de solicitud por donde llegara la información al servlet
+            data: {idArticuloEditar: idArticuloEditar}, // Datos a enviar (en este caso, el ID)
+            success: function (response) {
+                // Manejar la respuesta del servidor si es necesario
+            },
+            error: function (xhr, status, error) {
+                console.error('Error al enviar la solicitud:', error);
+            }
+        });
+    });
+</script>
