@@ -67,6 +67,12 @@ public class GestionarVentas {
         return articulosExistentes;
     }
 
+    /**
+     * Metodo Eliminar un articulo mediante el id
+     *
+     * @param idArticulo
+     * @return
+     */
     public boolean eliminarArticulo(int idArticulo) {
         String query = "DELETE FROM articulos WHERE id = ?"; // Consulta SQL para eliminar el artículo
         Connection conexion = null;
@@ -110,4 +116,53 @@ public class GestionarVentas {
             }
         }
     }
+    /**
+     * Metodo para ingresar un nuevo articulo
+     * @param nombre
+     * @param descripcion
+     * @param precio
+     * @return 
+     */
+    public boolean agregarArticulo(String nombre, String descripcion, double precio) {
+        String query = "INSERT INTO articulos (nombre, descripcion, precio) VALUES (?, ?, ?)";
+        Connection conexion = null;
+        PreparedStatement preparedStatement = null;
+        boolean resultado = false;
+
+        try {
+            // Obtener conexión a la base de datos
+            conexion = Conectar.getConexion();
+
+            // Preparar la sentencia SQL con los parámetros correspondientes
+            preparedStatement = conexion.prepareStatement(query);
+            preparedStatement.setString(1, nombre); // Asignar el nombre al parámetro 1
+            preparedStatement.setString(2, descripcion); // Asignar la descripción al parámetro 2
+            preparedStatement.setDouble(3, precio); // Asignar el precio al parámetro 3
+
+            // Ejecutar la inserción en la base de datos
+            int filasAfectadas = preparedStatement.executeUpdate();
+
+            // Verificar si la inserción fue exitosa
+            if (filasAfectadas > 0) {
+                resultado = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Mostrar errores de SQL
+        } finally {
+            try {
+                // Cerrar los recursos
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (conexion != null) {
+                    conexion.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return resultado; // Retorna true si se agregó correctamente
+    }
+
 }

@@ -100,18 +100,18 @@
             </div>
             <div class="modal-body">
                 <!-- Formulario para agregar un artículo -->
-                <form id="addForm" action="SvAgregarArticulo" method="POST"> <!-- Asegúrate de que la acción del formulario sea correcta -->
+                <form action="SvAniadirArticulo" method="POST"> 
                     <div class="mb-3">
                         <label for="nombreArticulo" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombreArticulo" name="nombreArticulo" required>
+                        <input type="text" class="form-control"  name="nombreArticulo" required>
                     </div>
                     <div class="mb-3">
                         <label for="descripcionArticulo" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="descripcionArticulo" name="descripcionArticulo" required></textarea>
+                        <textarea class="form-control"  name="descripcionArticulo" required></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="precioArticulo" class="form-label">Precio</label>
-                        <input type="number" class="form-control" id="precioArticulo" name="precioArticulo" step="0.01" required>
+                        <input type="number" class="form-control"  name="precioArticulo" step="0.01" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Agregar</button>
                 </form>
